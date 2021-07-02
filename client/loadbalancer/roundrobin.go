@@ -3,7 +3,7 @@ package loadbalancer
 import (
 	"container/list"
 	"errors"
-	"monitor_server/skynet"
+	"github.com/lemontree2015/skynet"
 	"sync"
 )
 

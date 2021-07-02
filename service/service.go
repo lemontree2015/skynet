@@ -2,11 +2,11 @@ package service
 
 import (
 	"github.com/golang/glog"
-	"monitor_server/skynet"
-	"monitor_server/skynet/client"
-	"monitor_server/skynet/config"
-	"monitor_server/skynet/cron"
-	"monitor_server/skynet/rpc/bsonrpc"
+	"github.com/lemontree2015/skynet"
+	"github.com/lemontree2015/skynet/client"
+	"github.com/lemontree2015/skynet/config"
+	"github.com/lemontree2015/skynet/cron"
+	"github.com/lemontree2015/skynet/rpc/bsonrpc"
 	"net"
 	"net/rpc"
 	"runtime/debug"

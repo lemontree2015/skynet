@@ -2,7 +2,7 @@ package client
 
 import (
 	"fmt"
-	"monitor_server/skynet"
+	"github.com/lemontree2015/skynet"
 )
 
 var globalMonitorClient *ServiceClient

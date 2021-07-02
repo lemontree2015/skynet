@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"monitor_server/skynet"
-	"monitor_server/skynet/client"
+	"github.com/lemontree2015/skynet"
+	"github.com/lemontree2015/skynet/client"
 )
 
 func main() {

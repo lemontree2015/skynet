@@ -1,7 +1,7 @@
 package client
 
 import (
-	"monitor_server/skynet"
+	"github.com/lemontree2015/skynet"
 )
 
 func init() {

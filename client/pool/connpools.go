@@ -2,11 +2,11 @@ package pool
 
 import (
 	"github.com/golang/glog"
-	"monitor_server/skynet"
-	"monitor_server/skynet/client/conn"
-	"monitor_server/skynet/config"
-	"monitor_server/skynet/cron"
-	"monitor_server/skynet/misc"
+	"github.com/lemontree2015/skynet"
+	"github.com/lemontree2015/skynet/client/conn"
+	"github.com/lemontree2015/skynet/config"
+	"github.com/lemontree2015/skynet/cron"
+	"github.com/lemontree2015/skynet/misc"
 	"runtime/debug"
 	"sync"
 )

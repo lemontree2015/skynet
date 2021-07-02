@@ -2,7 +2,7 @@ package skynet
 
 import (
 	"fmt"
-	"monitor_server/skynet/config"
+	"github.com/lemontree2015/skynet/config"
 	"strings"
 )
 

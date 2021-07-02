@@ -2,9 +2,9 @@ package conn
 
 import (
 	"fmt"
-	"monitor_server/skynet"
-	"monitor_server/skynet/config"
-	"monitor_server/skynet/rpc/bsonrpc"
+	"github.com/lemontree2015/skynet"
+	"github.com/lemontree2015/skynet/config"
+	"github.com/lemontree2015/skynet/rpc/bsonrpc"
 	"net"
 	"net/rpc"
 	"time"

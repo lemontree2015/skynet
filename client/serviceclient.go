@@ -3,11 +3,11 @@ package client
 import (
 	"errors"
 	"github.com/golang/glog"
-	"monitor_server/skynet"
-	"monitor_server/skynet/client/loadbalancer"
-	"monitor_server/skynet/client/pool"
-	"monitor_server/skynet/config"
-	"monitor_server/skynet/cron"
+	"github.com/lemontree2015/skynet"
+	"github.com/lemontree2015/skynet/client/loadbalancer"
+	"github.com/lemontree2015/skynet/client/pool"
+	"github.com/lemontree2015/skynet/config"
+	"github.com/lemontree2015/skynet/cron"
 	"runtime/debug"
 	"sync"
 )
