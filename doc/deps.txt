@@ -1,0 +1,9 @@
+依赖的外部项目
+
+1. glog
+<1> 安装
+go get github.com/golang/glog
+
+2. bson
+<1> 安装
+go get gopkg.in/mgo.v2/bson

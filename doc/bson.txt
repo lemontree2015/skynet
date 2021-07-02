@@ -1,0 +1,39 @@
+Bson
+
+1. skynet内部使用bson编码RPC数据
+
+2. 例子:
+package main
+
+import (
+	"fmt"
+	"gopkg.in/mgo.v2/bson"
+)
+
+type Person struct {
+	Name string
+	Age  int
+}
+
+func main() {
+	// Encode
+	p1 := &Person{
+		Name: "liqiang",
+		Age:  32,
+	}
+	b, _ := bson.Marshal(p1)
+
+	fmt.Printf("bytes: %v, size=%v\n", b, len(b))
+
+	// Decode
+	p2 := &Person{}
+	bson.Unmarshal(b, p2)
+	fmt.Printf("%v\n", p2)
+}
+
+输出:
+bytes: [32 0 0 0 2 110 97 109 101 0 8 0 0 0 108 105 113 105 97 110 103 0 16 97 103 101 0 32 0 0 0 0], size=32
+&{liqiang 32}
+
+备注:
+bson　Marshal前4 bytes是长度.

@@ -1,0 +1,33 @@
+GProto协议
+
+1. 基本类型
+<1> Int(Big-Endian编码)
+int8, int16, int32, int64
+uint8, uint16, uint32, uint64
+
+<2> Bytes/String
+uint16长度 + 具体字节流
+
+<3> Struct虚拟的约束
+uint16长度 + 具体字节流
+
+<4> List
+uint16具体元素个数 + 具体元素
+
+
+2. 协议
+<1> 协议格式
+| Header | Payload | Header | Payload | ....
+
+<2> Header
+| MagicWord | Version | Command | PayloadLength |  
+
+type GProtoMessageHeader struct {
+	MagicWord `gproto:uint32`
+	Version `gproto:uint16`
+	Command `gproto:uint16`	
+	PayloadLength `gproto:uint32`
+}
+
+
+

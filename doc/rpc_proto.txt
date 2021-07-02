@@ -1,0 +1,72 @@
+介绍RPC Proto
+
+1. [RPC Client -> RPC Server]
+RPC Client通过TCP连接到RPC Server
+
+2. [RPC Server -> RPC Client][TCP层的协议, BSON编码] 
+RPC Server给RPC Client发送ServiceRPCServerHandshake message.
+
+// [RPC Server -> RPC Client]
+type ServiceRPCServerHandshake struct {
+	ServiceName string // Service Name
+	ClientUUID  string // RPC Server分配给RPC Client的UUID
+}
+
+说明:
+<1> 服务器会下发2个信息:
+自己的名字                    - ServiceName
+给RPC Client分配的ClientUUID - ClientUUID
+
+<2> RPC Client会比较ServiceRPCServerHandshake.ServiceName和自己本地的serviceName, 如果不匹配, 会直接断开连接
+
+
+3. [RPC Client -> RPC Server][TCP层的协议, BSON编码]
+RPC Client给RPC Server发送ServiceRPCClientHandshake message.
+
+// [RPC Client -> RPC Server]
+type ServiceRPCClientHandshake struct {
+	ClientUUID string
+}
+
+说明:
+1-3步骤完成后, Client和Server之间可以进行RPC调用
+
+
+4. RPC调用
+一次RPC调用分为四个阶段
+
+<1> [RPC Client -> RPC Server]
+客户端发送rpc.Request
+
+// Request is a header written before every RPC call.  It is used internally
+// but documented here as an aid to debugging, such as when analyzing
+// network traffic.
+type Request struct {
+	ServiceMethod string   // format: "Service.Method"
+	Seq           uint64   // sequence number chosen by client
+}
+
+ServiceMethod固定是ServiceName.Forward
+
+
+<2> [RPC Client -> RPC Server]
+客户端发送实际RPC调用的内容
+
+
+<3> [RPC Server -> RPC Client]
+服务器回复rpc.Response
+
+// Response is a header written before every RPC return.  It is used internally
+// but documented here as an aid to debugging, such as when analyzing
+// network traffic.
+type Response struct {
+	ServiceMethod string    // echoes that of the Request
+	Seq           uint64    // echoes that of the request
+	Error         string    // error, if any.
+}
+
+ServiceMethod固定是ServiceName.Forward
+
+
+<4> [RPC Server -> RPC Client]
+服务器回复实际RPC调用的内容

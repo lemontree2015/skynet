@@ -1,0 +1,9 @@
+配置文件
+
+1. 每个skynet Instance在启动的时候, 必须指定一个配置文件, 否则会直接panic.
+
+备注:
+通过--conf_path=xxx来指定配置文件的路径
+
+2. 每个Instance在启动的时候, 可以通过--instance_uuid=xxx来指定Instance UUID, 
+如果不指定, 内部会自动生成一个Instance UUID.

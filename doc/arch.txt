@@ -1,0 +1,72 @@
+介绍skynet的架构
+
+
+1. 术语:
+<1> Instance
+每个启动的节点称为一个Instance, 每个Instance可以包含多个Service
+
+<2> Service
+一组功能的集合, 包含多个Method, 启动之后, 可以对外提供服务
+
+<3> Method
+一个对外的RPC Call Method, 完成一个独立的功能
+
+
+2. skynet monitor server
+<1> 管理所有的Service, 支持Service的Register, UnRegister, Get操作
+
+<2> 本身也会启动一个Service, 对外提供Register, UnRegister, Get的功能
+
+<3> Service需要定期调用Register函数上报自己的状态, 超时没有上报状态的Service, 会被GC
+
+说明:
+当skynet monitor server重启之后, Service会通过定期上报状态, 很快回复状态.
+
+
+3. skynet service逻辑
+<1> 每个Service会有一个ServiceInfo唯一标识
+
+<2> 每个Service运行在Instance上, 会启动2 + N个goroutine
+    1 - 负责接收Accept Connection
+    1 - 独立的消息loop, 负责处理shutdown等内部逻辑
+    N - 每一个连接过来的Connection启动一个独立的goroutine处理逻辑
+
+<3> 会定期先skynet monitor server上报自己的状态(上报失败不影响服务正常运行)
+
+
+4. skynet client逻辑:
+<1> Client所在的Instance会维护一个全局的Connection Pools来保存和Service的连接, 这是一个Pool的集合, 
+每个ServiceInfo,对应一个Pool, 每个Pool保存多个和Service连接的Connection. 是一个三层结构.
+
+结构如下:
+Connection Pools -> 
+      Pool1(ServiceInfo1) -> Conn1, Conn2, Conn3....
+      Pool2(ServiceInfo2) -> Conn1, Conn2, Conn3....
+      Pool3(ServiceInfo3) -> Conn1, Conn2, Conn3....
+      ....
+
+<2> 查找一个Connection的过程
+    a. 通过ServiceInfo找到Pool
+    b. 在Pool中查找Connection
+
+<3> Connection Pools中的Pool当Acquire的时候自动生成
+
+<4> Connection Pools中的Pool当一定时间没有使用, 自动GC(GC的时候会关闭所有的Connection)
+
+<5> Connection Pools全局会有一个GC, 定期清理过期的Pool
+
+<6> 每个skynet service client在创建的时候会从skynet monitor server获取一个满足条件的ServiceInfo列表, 并生成一个Loadbalancer, 
+做请求的负载均衡.
+    
+    发送请求的过程:
+    a. 从Loadbalancer中选择一个ServiceInfo
+    b. 从Connection Pools中找到ServiceInfo对应的Pool
+    c. 从Pool中选择一条连接, 启动一个goroutine发送请求(如果发送失败, 会从Pool中重新选择一条连接重新发送, 指导达到最大次数)
+
+<7> skynet service client会有一个sync monitor server逻辑, 负责定期和skynet monitor server同步满足条件的ServiceInfo
+    列表.
+
+
+
+
+
