@@ -2,12 +2,12 @@ package client
 
 import (
 	"errors"
-	"github.com/golang/glog"
 	"github.com/lemontree2015/skynet"
 	"github.com/lemontree2015/skynet/client/loadbalancer"
 	"github.com/lemontree2015/skynet/client/pool"
 	"github.com/lemontree2015/skynet/config"
 	"github.com/lemontree2015/skynet/cron"
+	"github.com/lemontree2015/skynet/logger"
 	"runtime/debug"
 	"sync"
 )
@@ -58,7 +58,7 @@ func (sc *ServiceClient) cronEveryFun() {
 
 	defer func() {
 		if r := recover(); r != nil {
-			glog.Infof("ServiceClient.cronEveryFun: %v, DEBUG.STACK=%v", r, string(debug.Stack()))
+			logger.Logger.Infof("ServiceClient.cronEveryFun: %v, DEBUG.STACK=%v", r, string(debug.Stack()))
 			return
 		}
 	}()

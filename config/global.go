@@ -3,7 +3,7 @@ package config
 import (
 	"flag"
 	"fmt"
-	"github.com/golang/glog"
+	"github.com/lemontree2015/skynet/logger"
 )
 
 // 全局唯一的配置文件
@@ -44,8 +44,7 @@ func Reload() {
 		panic(fmt.Errorf("Parse Config Error:%v", err))
 	}
 	skynetCFG = skynetCFGTmp // 替换
-
-	glog.Infof("parse skynet configuration success, path=%v", skynetCFG.FilePath())
+	logger.Logger.Infof("parse skynet configuration success, path=%v", skynetCFG.FilePath())
 }
 
 func FilePath() string {

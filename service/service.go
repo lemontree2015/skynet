@@ -1,11 +1,11 @@
 package service
 
 import (
-	"github.com/golang/glog"
 	"github.com/lemontree2015/skynet"
 	"github.com/lemontree2015/skynet/client"
 	"github.com/lemontree2015/skynet/config"
 	"github.com/lemontree2015/skynet/cron"
+	"github.com/lemontree2015/skynet/logger"
 	"github.com/lemontree2015/skynet/rpc/bsonrpc"
 	"net"
 	"net/rpc"
@@ -102,7 +102,7 @@ func (service *Service) tryListen(bindWait *sync.WaitGroup) {
 		}
 
 		if err != nil && !service.shuttingDown {
-			glog.Warningf("AcceptTCP failed: %v", err)
+			logger.Logger.Warningf("AcceptTCP failed: %v", err)
 			continue
 		}
 		service.connectionChan <- conn
@@ -123,7 +123,7 @@ func (service *Service) cronEveryFun() {
 
 	defer func() {
 		if r := recover(); r != nil {
-			glog.Infof("Service.cronEveryFun: %v, DEBUG.STACK=%v", r, string(debug.Stack()))
+			logger.Logger.Infof("Service.cronEveryFun: %v, DEBUG.STACK=%v", r, string(debug.Stack()))
 			return
 		}
 	}()

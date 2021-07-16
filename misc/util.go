@@ -4,7 +4,7 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"fmt"
-	"github.com/golang/glog"
+	"github.com/lemontree2015/skynet/logger"
 	"hash/crc64"
 	"os"
 	"time"
@@ -12,7 +12,7 @@ import (
 
 func CheckFatal(err error) {
 	if err != nil {
-		glog.Fatalf("CheckFatal: %v", err)
+		logger.Logger.Fatalf("CheckFatal: %v", err)
 		os.Exit(1)
 	}
 }

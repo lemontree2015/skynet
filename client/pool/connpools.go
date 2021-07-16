@@ -1,11 +1,11 @@
 package pool
 
 import (
-	"github.com/golang/glog"
 	"github.com/lemontree2015/skynet"
 	"github.com/lemontree2015/skynet/client/conn"
 	"github.com/lemontree2015/skynet/config"
 	"github.com/lemontree2015/skynet/cron"
+	"github.com/lemontree2015/skynet/logger"
 	"github.com/lemontree2015/skynet/misc"
 	"runtime/debug"
 	"sync"
@@ -120,7 +120,7 @@ func (pool *ConnPool) cronEveryFun() {
 
 	defer func() {
 		if r := recover(); r != nil {
-			glog.Infof("ServiceClient.cronEveryFun: %v, DEBUG.STACK=%v", r, string(debug.Stack()))
+			logger.Logger.Infof("ServiceClient.cronEveryFun: %v, DEBUG.STACK=%v", r, string(debug.Stack()))
 			return
 		}
 	}()
@@ -129,16 +129,16 @@ func (pool *ConnPool) cronEveryFun() {
 	for k, sp := range pool.servicePools {
 		if sp.service.Name == "Monitor Service" {
 			// Monitor Service不参与GC
-			glog.Infof("GC Pool(Normal): touchTimestamp=%v, delta=%v, service=%v",
+			logger.Logger.Infof("GC Pool(Normal): touchTimestamp=%v, delta=%v, service=%v",
 				sp.TouchTimestamp(), timestamp-sp.TouchTimestamp(), sp.service.ServiceUUID())
 		} else {
 			if sp.CanGC() {
-				glog.Infof("GC Pool(Delete): touchTimestamp=%v, delta=%v, service=%v",
+				logger.Logger.Infof("GC Pool(Delete): touchTimestamp=%v, delta=%v, service=%v",
 					sp.TouchTimestamp(), timestamp-sp.TouchTimestamp(), sp.service.ServiceUUID())
 				sp.Close()
 				delete(pool.servicePools, k)
 			} else {
-				glog.Infof("GC Pool(Normal): touchTimestamp=%v, delta=%v, service=%v",
+				logger.Logger.Infof("GC Pool(Normal): touchTimestamp=%v, delta=%v, service=%v",
 					sp.TouchTimestamp(), timestamp-sp.TouchTimestamp(), sp.service.ServiceUUID())
 			}
 		}
