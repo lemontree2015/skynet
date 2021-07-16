@@ -23,9 +23,6 @@ func init() {
 	loggerLevel["trace"] = logrus.TraceLevel
 
 	Logger = logrus.New()
-	//设置输出样式，自带的只有两种样式logrus.JSONFormatter{}和logrus.TextFormatter{}
-	Logger.SetFormatter(&logrus.JSONFormatter{})
-	Logger.SetOutput(os.Stdout)
 
 	logPath, err := config.DefaultString("log.path")
 	if err != nil {
@@ -50,5 +47,17 @@ func init() {
 		Logger.SetLevel(level)
 	} else {
 		Logger.SetLevel(logrus.InfoLevel)
+	}
+	//设置输出样式，自带的只有两种样式logrus.JSONFormatter{}和logrus.TextFormatter{}
+	//Logger.SetFormatter(&logrus.JSONFormatter{})
+	cfgLogFormatter, err := config.DefaultString("log.formatter")
+	if err != nil {
+		cfgLogFormatter = "text"
+	}
+	switch cfgLogFormatter {
+	case "json":
+		Logger.SetFormatter(&logrus.JSONFormatter{})
+	default:
+		Logger.SetFormatter(&logrus.TextFormatter{})
 	}
 }
