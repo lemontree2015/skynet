@@ -30,7 +30,13 @@ func init() {
 	}
 	file, err := os.OpenFile(logPath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	//file, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	writers := []io.Writer{file, os.Stdout}
+	writers := []io.Writer{file}
+	if cfgStdout, err := config.DefaultBool("log.stdout"); err == nil {
+		if cfgStdout {
+			writers = append(writers, os.Stdout)
+		}
+	}
+
 	//同时写文件和屏幕
 	fileAndStdoutWriter := io.MultiWriter(writers...)
 	if err == nil {
