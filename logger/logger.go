@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"fmt"
 	"github.com/lemontree2015/skynet/config"
 	"github.com/sirupsen/logrus"
 	"io"
@@ -28,7 +29,7 @@ func init() {
 
 	logPath, err := config.DefaultString("log.path")
 	if err != nil {
-		panic("日志路径未配制")
+		panic(fmt.Errorf("log.path is not set"))
 	}
 	file, err := os.OpenFile(logPath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	//file, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
