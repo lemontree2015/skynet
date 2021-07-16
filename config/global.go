@@ -43,7 +43,7 @@ func Reload() {
 		panic(fmt.Errorf("Parse Config Error:%v", err))
 	}
 	skynetCFG = skynetCFGTmp // 替换
-	fmt.Printf("parse skynet configuration success, path=%v", skynetCFG.FilePath())
+	//fmt.Printf("parse skynet configuration success, path=%v", skynetCFG.FilePath())
 }
 
 func FilePath() string {
