@@ -74,10 +74,14 @@ func (sc *ServiceClient) cronEveryFun() {
 
 	// 从Monitor获取Service
 	if services, runTime, err := GetServices(sc.criteria); err == nil {
-		if int(runTime) > config.MonitorTrustTime() {
+		if int(runTime) > config.MonitorTrustTime() && len(services) > 0 {
 			// Monitor是可信任的
 			sc.UpdateServices(services)
+		} else {
+			sc.closed = true
 		}
+	} else {
+		sc.closed = true
 	}
 }
 
